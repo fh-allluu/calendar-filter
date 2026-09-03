@@ -1,11 +1,17 @@
+import os
 import re
+import sys
 import urllib.request
 
-SOURCE_URL = "https://portal.fh-campuswien.ac.at/calendar/feed/381064f3f30d49ca97befb8c7b43e326"
+SOURCE_URL = os.environ.get("CALENDAR_SOURCE_URL")
 OUTPUT_FILE = "calendar_filtered.ics"
 EXCLUDE_KEYWORDS = ["software engineering"]  # add more lowercase keywords here to exclude more
 
 def main():
+    if not SOURCE_URL:
+        print("ERROR: CALENDAR_SOURCE_URL environment variable is not set.", file=sys.stderr)
+        sys.exit(1)
+
     req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "Mozilla/5.0"})
     raw = urllib.request.urlopen(req).read().decode("utf-8")
 
