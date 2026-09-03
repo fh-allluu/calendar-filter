@@ -2,7 +2,7 @@ name: Update filtered calendar
 
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: "0 14 * * *"   
   workflow_dispatch: {}     # lets you also trigger it manually from the Actions tab
 
 permissions:
@@ -20,6 +20,8 @@ jobs:
           python-version: "3.12"
 
       - name: Run filter script
+        env:
+          CALENDAR_SOURCE_URL: ${{ secrets.CALENDAR_SOURCE_URL }}
         run: python filter.py
 
       - name: Commit and push if changed
